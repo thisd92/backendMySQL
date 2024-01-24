@@ -63,7 +63,8 @@ exports.UpdateById = async (req, res, next) => {
     try {
         const { params: { id } } = req
         const { email, password } = req.body
-        await User.update({ password: password }, {
+        const hashedPassword = await bcrypt.hash(password, 10)
+        await User.update({ password: hashedPassword }, {
             where: {
                 uuid: id,
                 username: email
